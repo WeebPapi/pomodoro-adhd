@@ -1,9 +1,19 @@
+"use client"
 import Image from "next/image"
+import { trpc } from "./_trpc/client"
+import { useState } from "react"
+import PomodoroTimer from "@/components/PomodoroTimer"
 
 export default function Home() {
+  const [userMessage, setUserMessage] = useState("")
+
+  const { data, isLoading, error } = trpc.getMessage.useQuery(undefined, {
+    refetchInterval: 5000,
+  })
+  const mutation = trpc.addMessage.useMutation()
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Dashboard
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-6 flex justify-center items-center">
+      <PomodoroTimer />
     </div>
   )
 }
